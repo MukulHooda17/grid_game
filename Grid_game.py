@@ -11,7 +11,6 @@ OBSTACLES = (128, 128, 128)
 ITEMS = (255, 0, 0)
 FINISHING_CELL_COLOR = (0, 255, 0)
 
-
 class Grid_Game:
 
     def __init__(self):
@@ -30,16 +29,15 @@ class Grid_Game:
         self.FINISH_COLOR = FINISHING_CELL_COLOR
         self.FONT = pygame.font.Font(None, 36)
 
-        # Creating window
+        # Create the window
         self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
         pygame.display.set_caption("Grid Game")
 
         # Initialize game state
         self.player_x, self.player_y = 0, 0
         self.obstacles = [(3, 3), (6, 6), (8, 5), (10, 8), (12, 12), (15, 15), (17, 17), (8, 3),
-                          (12, 5), (77, 4), (42, 9), (4, 8), (12, 14), (50, 66), (10, 19), (20, 23),
-                          (40, 33)]  # obstacle positions
-        self.items = [(2, 2), (7, 4), (9, 9), (10, 9), (43, 7),(18,10)]  # item positions
+                          (12, 5), (77, 4), (42, 9), (4, 8), (12, 14), (50, 66)]  # obstacle positions
+        self.items = [(2, 2), (7, 4), (9, 9), (10, 9), (43, 7)]  # item positions
         self.finish_line = (self.GRID_WIDTH - 1, self.GRID_HEIGHT - 1)  # Finish line at the right bottom of grid
         self.player_has_finished = False
         self.rules_displayed = False
@@ -147,11 +145,24 @@ class Grid_Game:
                 # Handle collision (e.g., game over)
                 if not self.player_has_finished:
                     font = pygame.font.Font(None, 36)
-                    text = font.render("Game Ended! Starting Again!!!", True, (0, 0, 0))
-                    self.screen.blit(text, (20, self.HEIGHT // 2 - 25))
+                    text = font.render("Game Over!", True, (0, 0, 0))
+                    self.screen.blit(text, (150, self.HEIGHT // 2 - 18))
                     pygame.display.flip()
                     pygame.time.wait(1000)  # Wait for a second before restarting
                     self.__init__()  # Restart the game
+                else:
+                    self.player_has_finished = False  # Reset the flag
+                    self.player_x, self.player_y = 0, 0  # Reset player position
+
+            if self.player_has_finished:
+                # Display a message upon finishing
+                font = pygame.font.Font(None, 36)
+                text = font.render("Congratulations! You finished!", True, (0, 0, 0))
+                self.screen.blit(text, (50, self.HEIGHT // 2))
+                pygame.display.flip()
+                pygame.time.wait(1000)  # Wait for a second before restarting
+                self.__init__()  # Restart the game
+
             pygame.display.flip()
 
 
